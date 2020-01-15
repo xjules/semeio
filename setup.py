@@ -55,6 +55,7 @@ setup(
         "scipy",
         "xlrd",
         "stea",
+        "segyio",
     ],
     setup_requires=["pytest-runner", "setuptools_scm"],
     tests_require=["pytest", "mock", 'black; python_version>="3.6"'],
