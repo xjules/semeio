@@ -107,11 +107,22 @@ class OTSVelSurface(object):
             else:
                 raise RuntimeError
 
-        x, y, traces, nt, dt = self._upscale_velocity(
+        import time
+        start  = time.time()
+        x1, y1, traces1, nt1, dt1 = self._upscale_velocity(
             cell_corners, x, y, traces, nt, dt
         )
 
-        return x, y, traces, nt, dt
+        print("original: {}".format(time.time()-start))
+        start = time.time()
+        traces2 = self._upscale_velocity_scipy(
+            cell_corners, x, y, traces, nt, dt
+        )
+        print("new: {}".format(time.time()-start))
+
+        traces2 = self._upscale_trace(traces2, nt, dt)
+
+        return x1, y1, traces1, nt1, dt1
 
     @staticmethod
     def _upscaling_size_stepping(res_corners, axis, vel_axis):
@@ -141,7 +152,19 @@ class OTSVelSurface(object):
         return nn, ups
 
     def _upscale_velocity(self, res_corners, x_vel, y_vel, traces, nt, dt):
+        """
+
+        :param res_corners: top-most voxels of ecl grid in UTS coordinates
+        :param x_vel: coordinates (CDT) x of segy vel
+        :param y_vel: coordinates (CDT) y of segy vel
+        :param traces: extracted segy traces
+        :param nt: length of the trace
+        :param dt: sampling frequency along one trace
+        :return:
+        """
         # resample to a new grid size based on the grid size
+        # nx - number of samples
+        # upsx - upscaling factor
         nxx, upsx = self._upscaling_size_stepping(res_corners[:, :, 0], 0, x_vel)
 
         nyy, upsy = self._upscaling_size_stepping(res_corners[:, :, 1], 1, y_vel)
@@ -162,17 +185,57 @@ class OTSVelSurface(object):
             0 : (nyy - 1) * upsy + 1 : upsy,
             0 : (ntt - 1) * upst + 1 : upst,
         ]
-
+        # maybe we need to return ntt and not the original trace length
         return x, y, traces_upscaled, nt, dt
+
+
+    def _upscale_velocity_scipy(self, res_corners, x_vel, y_vel, traces, nt, dt):
+        """
+
+        :param res_corners: top-most voxels of ecl grid in UTS coordinates
+        :param x_vel: coordinates (CDT) x of segy vel
+        :param y_vel: coordinates (CDT) y of segy vel
+        :param traces: extracted segy traces
+        :param nt: length of the trace
+        :param dt: sampling frequency along one trace
+        :return:
+        """
+        from scipy.interpolate import griddata
+
+        segy_points = (x_vel.flatten(), y_vel.flatten())
+        res_points = (res_corners[:, :, 0].flatten(), res_corners[:, :, 1].flatten())
+        values = traces.transpose((1,0,2)).reshape(-1, nt)
+
+        traces_upscaled = griddata(points=segy_points,
+                                   values=values,
+                                   xi=res_points,
+                                   method="nearest")
+
+        return traces_upscaled.reshape(res_corners.shape[1], -1, nt)
+
+    def _upscale_trace(self, trace, nt, dt):
+        ntt = int(np.floor(nt / (16e-3 / dt)))
+        upst = int(np.floor((nt - 1) / ntt))
+        if upst == 0:
+            upst = 1
+            ntt = nt
+        dt = dt * upst
+        upsaled_trace = trace[:,:,0: (ntt - 1) * upst + 1: upst]
+        return upsaled_trace
+
 
     def _map_reservoir_surface_to_velocity(self, res_surface, vcube):
         """
         Interpolates reservoir top surface to velocity grid
         """
         # downsample segy if segy resultion of CDP and sample rate is higher than of the Eclgrid
-        x, y, traces, nt, self._dt = self._read_velocity(
-            vcube, res_surface.cell_corners
-        )
+        # old way doing this
+        # x, y, traces, nt, self._dt = self._read_velocity(
+        #     vcube, res_surface.cell_corners
+        # )
+
+        traces = self._read_velocity(vcube, res_surface.cell_corners)
+
         # this is some clever integration of traces using averaging between two samples?
         vel_t_int = np.zeros_like(traces)
         vel_t_int[:, :, 1:] = (traces[:, :, 0:-1] + traces[:, :, 1:]) / 2
