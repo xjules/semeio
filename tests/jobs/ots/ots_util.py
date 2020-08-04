@@ -90,24 +90,18 @@ def create_segy_file(name, spec, trace=None, il=None, xl=None, cdp_x=None, cdp_y
     with segyio.create(name, spec) as f:
 
         scalar = 1
-
-        for i, v in enumerate(spec.ilines):
-            f.header.iline[v] = {TraceField.SourceGroupScalar: scalar}
-            if il is not None:
-                f.header.iline[v] = {TraceField.INLINE_3D: il[i]}
-            if cdp_y is not None:
-                f.header.iline[v] = {TraceField.CDP_Y: cdp_y[i]}
-
-        for i, v in enumerate(spec.xlines):
-            f.header.xline[v] = {TraceField.SourceGroupScalar: scalar}
-            if xl is not None:
-                f.header.xline[v] = {TraceField.CROSSLINE_3D: xl[i]}
-            if cdp_x is not None:
-                f.header.xline[v] = {TraceField.CDP_X: cdp_x[i]}
-
-        if trace is not None:
-            for i in range(len(f.trace)):
-                f.trace[i] = trace
+        trno = 0
+        for i in range(len(cdp_x)):
+            for j in range(len(cdp_y)):
+                f.header[trno] = {
+                    TraceField.CDP_Y: cdp_y[j],
+                    TraceField.CDP_X: cdp_x[i],
+                    TraceField.CROSSLINE_3D: xl[i],
+                    TraceField.INLINE_3D: il[j],
+                    TraceField.SourceGroupScalar: scalar,
+                }
+                f.trace[trno] = trace + 0.5 * trno
+                trno += 1
 
 
 def mock_segy(
@@ -154,7 +148,7 @@ def mock_segy(
     # traces are currently hardcoded going linearly up 1500-4800 samplez into nz steps
     spec = segyio.spec()
     spec.format = 5
-    spec.sorting = 2
+    spec.sorting = 1
     spec.samples = range(0, nz * 4, 4)
     spec.ilines = range(ny)
     spec.xlines = range(nx)
@@ -173,7 +167,6 @@ def mock_segy(
 
 if __name__ == "__main__":
     from ecl.grid import EclGrid
-    from ecl.eclfile import EclFile
     import os
 
     grid_path = os.path.realpath(
