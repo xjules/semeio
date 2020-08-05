@@ -2,7 +2,7 @@ from semeio.jobs.ots import ots_run
 from ecl.util.geometry import Surface
 from ecl.grid import EclGrid
 import pytest
-from tests.jobs.ots.ots_util import mock_segy
+from ots_util import mock_segy
 import yaml
 import numpy as np
 import os
@@ -67,7 +67,7 @@ def test_ots_config_run_parameters(
     assert (s_horizon.getNX() > grid.getNY()) == results[-1]
     assert (s_horizon.getNY() > grid.getNX()) == results[-1]
 
-    _err = 1.0
+    _err = 0.01
     nx = s_horizon.getNX()
     ny = s_horizon.getNY()
     arr = to_numpy(s_horizon)
@@ -94,8 +94,8 @@ def test_ots_config_run_parameters(
     ts_simple2 = Surface("ts_ts_simple/ots_1997_12_17_1998_01_01.irap")
     assert nx == ts_simple2.getNX()
     assert ny == ts_simple2.getNY()
-    assert ((ts_simple2.getNX() > grid.getNY()) == results[-1]
-    assert ((ts_simple2.getNY() > grid.getNX()) == results[-1]
+    assert (ts_simple2.getNX() > grid.getNY()) == results[-1]
+    assert (ts_simple2.getNY() > grid.getNX()) == results[-1]
 
     arr = to_numpy(ts_simple2)
     ts2_top_left = arr[: ny // 2 - 1, : nx // 2 - 1].sum()
