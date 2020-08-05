@@ -148,7 +148,7 @@ def mock_segy(
     # traces are currently hardcoded going linearly up 1500-4800 samplez into nz steps
     spec = segyio.spec()
     spec.format = 5
-    spec.sorting = 1
+    spec.sorting = 2
     spec.samples = range(0, nz * 4, 4)
     spec.ilines = range(ny)
     spec.xlines = range(nx)
