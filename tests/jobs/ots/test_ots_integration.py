@@ -67,13 +67,14 @@ def test_ots_config_run_parameters(
     assert (s_horizon.getNX() > grid.getNY()) == results[-1]
     assert (s_horizon.getNY() > grid.getNX()) == results[-1]
 
+    _err = 1.0
     nx = s_horizon.getNX()
     ny = s_horizon.getNY()
     arr = to_numpy(s_horizon)
     sh_top_left = arr[: ny // 2 - 1, : nx // 2 - 1].sum()
     sh_bottom_right = arr[ny // 2 :, nx // 2 :].sum()
-    assert (sh_top_left > 0) == results[0]
-    assert (sh_bottom_right > 0) == results[1]
+    assert ((sh_top_left - _err) > 0) == results[0]
+    assert ((sh_bottom_right - _err) > 0) == results[1]
 
     # ts_simple1
     ts_simple1 = Surface("ts_ts_simple/ots_1997_11_06_1998_02_01.irap")
@@ -85,22 +86,22 @@ def test_ots_config_run_parameters(
     arr = to_numpy(ts_simple1)
     ts1_top_left = arr[: ny // 2 - 1, : nx // 2 - 1].sum()
     ts1_bottom_right = arr[ny // 2 :, nx // 2 :].sum()
-    assert (ts1_top_left > 0) == results[0]
-    assert (ts1_bottom_right > 0) == results[1]
+    assert ((ts1_top_left - _err) > 0) == results[0]
+    assert ((ts1_bottom_right - _err) > 0) == results[1]
     assert ts1_top_left + ts1_bottom_right < sh_top_left + sh_bottom_right
 
     # ts_simple2
     ts_simple2 = Surface("ts_ts_simple/ots_1997_12_17_1998_01_01.irap")
     assert nx == ts_simple2.getNX()
     assert ny == ts_simple2.getNY()
-    assert (ts_simple2.getNX() > grid.getNY()) == results[-1]
-    assert (ts_simple2.getNY() > grid.getNX()) == results[-1]
+    assert ((ts_simple2.getNX() > grid.getNY()) == results[-1]
+    assert ((ts_simple2.getNY() > grid.getNX()) == results[-1]
 
     arr = to_numpy(ts_simple2)
     ts2_top_left = arr[: ny // 2 - 1, : nx // 2 - 1].sum()
     ts2_bottom_right = arr[ny // 2 :, nx // 2 :].sum()
-    assert (ts2_top_left > 0) == results[0]
-    assert (ts2_bottom_right > 0) == results[1]
+    assert ((ts2_top_left - _err) > 0) == results[0]
+    assert ((ts2_bottom_right - _err) > 0) == results[1]
     assert ts2_top_left + ts2_bottom_right < sh_top_left + sh_bottom_right
     assert ts2_top_left + ts2_bottom_right < ts1_top_left + ts1_bottom_right
 
@@ -114,6 +115,6 @@ def test_ots_config_run_parameters(
     arr = to_numpy(ts_simple2)
     dpv_top_left = arr[: ny // 2 - 1, : nx // 2 - 1].sum()
     dpv_bottom_right = arr[ny // 2 :, nx // 2 :].sum()
-    assert (dpv_top_left > 0) == results[0]
-    assert (dpv_bottom_right > 0) == results[1]
+    assert ((dpv_top_left - _err) > 0) == results[0]
+    assert ((dpv_bottom_right - _err) > 0) == results[1]
     assert dpv_top_left + dpv_bottom_right < sh_top_left + sh_bottom_right
