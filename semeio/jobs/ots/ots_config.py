@@ -39,25 +39,23 @@ def build_schema():
         MK.Type: types.NamedDict,
         MK.Description: "Overburden time shift job parameters",
         MK.Content: {
-            "seabed": {MK.Required: True, MK.Type: types.Number},
-            "rfactor": {MK.Required: True, MK.Type: types.Number},
-            "above": {MK.Required: True, MK.Type: types.Number},
-            "convention": {MK.Required: False, MK.Type: types.Number},
-            "poisson": {MK.Required: True, MK.Type: types.Number},
-            "youngs": {MK.Required: True, MK.Type: types.Number},
-            "output_dir": {MK.Required: True, MK.Type: types.String},
-            "horizon": {MK.Required: False, MK.Type: types.String},
-            "eclbase": {MK.Required: True, MK.Type: types.String},
-            "ascii": {MK.Required: False, MK.Type: types.String},
-            "velocity_model": {MK.Required: True, MK.Type: types.String},
-            "mapaxes": {MK.Required: True, MK.Type: types.Bool},
+            "seabed": {MK.Type: types.Number},
+            "rfactor": {MK.Type: types.Number},
+            "above": {MK.Type: types.Number},
+            "convention": {MK.Type: types.Number, MK.Default: 1},
+            "poisson": {MK.Type: types.Number},
+            "youngs": {MK.Type: types.Number, MK.Default: 0},
+            "output_dir": {MK.Type: types.String},
+            "horizon": {MK.Type: types.String, MK.Default: None},
+            "eclbase": {MK.Type: types.String},
+            "ascii": {MK.Type: types.String, MK.Default: None},
+            "velocity_model": {MK.Type: types.String},
+            "mapaxes": {MK.Type: types.Bool},
             "vintages": {
-                MK.Required: True,
                 MK.Type: types.NamedDict,
                 MK.ElementValidators: (_min_length,),
                 MK.Content: {
                     "ts_simple": {
-                        MK.Required: False,
                         MK.Type: types.List,
                         MK.Content: {
                             MK.Item: {
@@ -74,9 +72,9 @@ def build_schema():
                                 MK.LayerTransformation: _str2dates,
                             }
                         },
+                        # MK.Default: [],
                     },
                     "ts": {
-                        MK.Required: False,
                         MK.Type: types.List,
                         MK.Content: {
                             MK.Item: {
@@ -93,9 +91,9 @@ def build_schema():
                                 MK.LayerTransformation: _str2dates,
                             }
                         },
+                        # MK.Default: [],
                     },
                     "dpv": {
-                        MK.Required: False,
                         MK.Type: types.List,
                         MK.Content: {
                             MK.Item: {
@@ -112,9 +110,9 @@ def build_schema():
                                 MK.LayerTransformation: _str2dates,
                             }
                         },
+                        # MK.Default: [],
                     },
                     "ts_rporv": {
-                        MK.Required: False,
                         MK.Type: types.List,
                         MK.Content: {
                             MK.Item: {
@@ -131,6 +129,7 @@ def build_schema():
                                 MK.LayerTransformation: _str2dates,
                             }
                         },
+                        # MK.Default: [],
                     },
                 },
             },
@@ -138,12 +137,12 @@ def build_schema():
     }
 
 
-def get_default_values():
-    default_values = {
-        "vintages": {"ts_simple": [], "ts_rporv": [], "ts": [], "dpv": []},
-        "youngs": 0,
-        "convention": 1,
-        "ascii": None,
-        "horizon": None,
-    }
-    return default_values
+# def get_default_values():
+#     default_values = {
+#         "vintages": {"ts_simple": [], "ts_rporv": [], "ts": [], "dpv": []},
+#         "youngs": 0,
+#         "convention": 1,
+#         "ascii": None,
+#         "horizon": None,
+#     }
+#     return default_values

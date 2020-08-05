@@ -14,7 +14,7 @@ from ecl.util.geometry import Surface
 
 from .ots_vel_surface import OTSVelSurface
 from .ots_res_surface import OTSResSurface
-from .ots_config import build_schema, get_default_values
+from .ots_config import build_schema
 import configsuite
 import yaml
 
@@ -32,11 +32,10 @@ def ots_load_params(input_file):
     config = None
     with open(input_file, "r") as fin:
         config = yaml.safe_load(fin)
-    default_layer = get_default_values()
     config = configsuite.ConfigSuite(
         config,
         build_schema(),
-        layers=(default_layer,),
+        deduce_required=True,
         extract_validation_context=extract_ots_context,
     )
     assert config.valid
@@ -150,8 +149,9 @@ class OTS(object):
         self._convention = convention
         self._verbose = verbose
 
-        res_surface = OTSResSurface(grid=self._grid, above=above)
-        self._surface = OTSVelSurface(res_surface=res_surface, vcube=velocity_model)
+        self._surface = res_surface = OTSResSurface(grid=self._grid, above=above)
+        if velocity_model is not None:
+            self._surface = OTSVelSurface(res_surface=res_surface, vcube=velocity_model)
 
         self._restart_views = {}
 
