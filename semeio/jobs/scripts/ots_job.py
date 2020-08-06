@@ -4,14 +4,14 @@ from semeio.jobs.ots import ots_run
 import argparse
 from semeio import valid_file
 
-
-def _get_args_parser():
-    description = (
+description = (
         "Overburden timeshift (OTS) generates evolution of reservoir surfaces"
         "based on eclipse models and seismic velocity volume."
         "Input yml needs to contains vintages section, where at least one of the four categories"
         "for the surface computation needs to be set."
     )
+
+def _get_args_parser():
     parser = argparse.ArgumentParser(description=description)
 
     parser.add_argument(
