@@ -41,7 +41,6 @@ def test_ots_config_run_parameters(
         "horizon": "horizon.irap",
         "ascii": "ts.txt",
         "velocity_model": "norne_vol.segy",
-        "mapaxes": False,
         "vintages": {
             "ts_simple": [["1997-11-06", "1998-02-01"], ["1997-12-17", "1998-01-01"]],
             "dpv": [["1997-11-06", "1997-12-17"]],

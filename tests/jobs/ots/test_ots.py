@@ -3,10 +3,10 @@ import datetime
 from collections import namedtuple
 
 from ecl.grid import EclGridGenerator
-
-from semeio.jobs.ots import OTS
 from ecl.util.geometry import Surface
 import segyio
+
+from semeio.jobs.ots import OTS
 from ots_util import create_init, create_restart, create_segy_file
 
 parms = namedtuple(
@@ -450,5 +450,5 @@ def test_irap_surface(setUp):
     assert s.getNX() == 2
     assert s.getNY() == 2
 
-    for i in range(len(s)):
-        assert s[i] == 90
+    for val in s:
+        assert val == 90
