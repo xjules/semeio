@@ -39,24 +39,62 @@ def build_schema():
         MK.Type: types.NamedDict,
         MK.Description: "Overburden time shift job parameters",
         MK.Content: {
-            "seabed": {MK.Type: types.Number},
-            "rfactor": {MK.Type: types.Number},
-            "above": {MK.Type: types.Number},
-            "convention": {MK.Type: types.Number, MK.Default: 1},
-            "poisson": {MK.Type: types.Number},
-            "youngs": {MK.Type: types.Number, MK.Default: 0},
-            "output_dir": {MK.Type: types.String},
-            "horizon": {MK.Type: types.String, MK.Default: None},
-            "eclbase": {MK.Type: types.String},
-            "ascii": {MK.Type: types.String, MK.Default: None},
-            "velocity_model": {MK.Type: types.String},
-            "mapaxes": {MK.Type: types.Bool},
+            "seabed": {
+                MK.Type: types.Number,
+                MK.Description: "The depth of the seabead in meters.",
+            },
+            "rfactor": {MK.Type: types.Number, MK.Description: "R factor."},
+            "above": {
+                MK.Type: types.Number,
+                MK.Description: "Distance in meters above the reservoir where shift is calculated.",
+            },
+            "convention": {
+                MK.Type: types.Number,
+                MK.Description: "Can be either 1 or -1, where 1 = monitor-base and -1 = base-monitor."
+                "The default value is 1.",
+                MK.Default: 1,
+            },
+            "poisson": {MK.Type: types.Number, MK.Description: "Poisson ratio."},
+            "youngs": {
+                MK.Type: types.Number,
+                MK.Description: "Youngs modulus. The default is 0.",
+                MK.Default: 0,
+            },
+            "output_dir": {
+                MK.Type: types.String,
+                MK.Description: "Directory(ies) where shift is written to disk."
+                "Post fixed with type of algorithm. ts, ts_simple, dpv",
+            },
+            "horizon": {
+                MK.Type: types.String,
+                MK.Description: "Path to result irap file with depth of horizon. Only output.",
+                MK.Default: None,
+            },
+            "eclbase": {
+                MK.Type: types.String,
+                MK.Description: "Path to the Eclipse case.",
+            },
+            "ascii": {
+                MK.Type: types.String,
+                MK.Description: "Path to result text file with lines of x, y, z, ts1, ts2, ts3....",
+                MK.Default: None,
+            },
+            "velocity_model": {
+                MK.Type: types.String,
+                MK.Description: "Path to the segy file containing the velocity.",
+            },
+            "mapaxes": {
+                MK.Type: types.Bool,
+                MK.Description: "Mapping axes from the global to local geometry. Can be True or False.",
+            },
             "vintages": {
                 MK.Type: types.NamedDict,
                 MK.ElementValidators: (_min_length,),
                 MK.Content: {
                     "ts_simple": {
                         MK.Type: types.List,
+                        MK.Description: "Simple TimeShift geertsma algorithm."
+                        "It assumes a constant velocity and is fast.",
                         MK.Content: {
                             MK.Item: {
                                 MK.Type: types.List,
@@ -72,10 +110,10 @@ def build_schema():
                                 MK.LayerTransformation: _str2dates,
                             }
                         },
-                        # MK.Default: [],
                     },
                     "ts": {
                         MK.Type: types.List,
+                        MK.Description: "TimeShift geertsma algorithm, which is very slow.",
                         MK.Content: {
                             MK.Item: {
                                 MK.Type: types.List,
@@ -91,10 +129,10 @@ def build_schema():
                                 MK.LayerTransformation: _str2dates,
                             }
                         },
-                        # MK.Default: [],
                     },
                     "dpv": {
                         MK.Type: types.List,
+                        MK.Description: "Delta pressure multiplied by the volume, which is a faster implementation.",
                         MK.Content: {
                             MK.Item: {
                                 MK.Type: types.List,
@@ -110,7 +148,6 @@ def build_schema():
                                 MK.LayerTransformation: _str2dates,
                             }
                         },
-                        # MK.Default: [],
                     },
                     "ts_rporv": {
                         MK.Type: types.List,
@@ -129,20 +166,8 @@ def build_schema():
                                 MK.LayerTransformation: _str2dates,
                             }
                         },
-                        # MK.Default: [],
                     },
                 },
             },
         },
     }
-
-
-# def get_default_values():
-#     default_values = {
-#         "vintages": {"ts_simple": [], "ts_rporv": [], "ts": [], "dpv": []},
-#         "youngs": 0,
-#         "convention": 1,
-#         "ascii": None,
-#         "horizon": None,
-#     }
-#     return default_values
