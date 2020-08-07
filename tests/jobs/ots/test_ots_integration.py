@@ -1,4 +1,4 @@
-from semeio.jobs.ots import ots_run
+from semeio.jobs.ots.ots import ots_run
 from ecl.util.geometry import Surface
 from ecl.grid import EclGrid
 import pytest

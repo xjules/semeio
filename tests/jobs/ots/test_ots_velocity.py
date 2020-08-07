@@ -1,7 +1,8 @@
 import pytest
 
 from ecl.grid import EclGridGenerator
-from semeio.jobs.ots import OTSVelSurface, OTSResSurface
+from semeio.jobs.ots.ots_vel_surface import OTSVelSurface
+from semeio.jobs.ots.ots_res_surface import OTSResSurface
 import segyio
 from ots_util import create_segy_file
 

@@ -1,5 +1,5 @@
 import numpy as np
-from semeio.jobs.ots import OTSResSurface
+from semeio.jobs.ots.ots_res_surface import OTSResSurface
 from ecl.grid import EclGrid, EclGridGenerator
 import os
 import pytest

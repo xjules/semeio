@@ -6,7 +6,7 @@ from ecl.grid import EclGridGenerator
 from ecl.util.geometry import Surface
 import segyio
 
-from semeio.jobs.ots import OTS
+from semeio.jobs.ots.ots import OTS
 from ots_util import create_init, create_restart, create_segy_file
 
 parms = namedtuple(
