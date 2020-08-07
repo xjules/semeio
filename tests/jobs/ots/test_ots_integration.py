@@ -8,6 +8,7 @@ import numpy as np
 import os
 
 
+# pylint: disable=too-many-statements
 @pytest.mark.parametrize(
     "res_scale, size_scale, pos_shift, results, surf_res",
     [
