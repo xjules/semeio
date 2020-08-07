@@ -52,7 +52,8 @@ class OTSResSurface(object):
         return self._get_top_corners()
 
     def _calculate_surface(self, grid, above):
-        # calculate average from top face vecrtices from unstructured grid as an interface between active and inactive cells
+        # calculate average from top face vecrtices
+        # from unstructured grid as an interface between active and inactive cells
         nx = grid.getNX()
         ny = grid.getNY()
         nz = grid.getNZ()
@@ -71,9 +72,9 @@ class OTSResSurface(object):
 
                 top = [grid.getCellCorner(c, ijk=ijk) for c in range(0, 4)]
                 pos = i * ny + j
-                x[pos] = sum(l[0] for l in top) / 4.0
-                y[pos] = sum(l[1] for l in top) / 4.0
-                z[pos] = sum(l[2] for l in top) / 4.0
+                x[pos] = sum(val[0] for val in top) / 4.0
+                y[pos] = sum(val[1] for val in top) / 4.0
+                z[pos] = sum(val[2] for val in top) / 4.0
 
         z -= above
 

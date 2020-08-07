@@ -214,8 +214,15 @@ def test_geertsma_TS_simple(setUp):
 
     parms.velocity_model = "TEST.segy"
 
-    l = [50, 150]
-    create_segy_file(parms.velocity_model, spec, xl=l, il=l, cdp_x=l, cdp_y=l)
+    int_val = [50, 150]
+    create_segy_file(
+        parms.velocity_model,
+        spec,
+        xl=int_val,
+        il=int_val,
+        cdp_x=int_val,
+        cdp_y=int_val
+    )
 
     ots = OTS(
         parms.eclbase,
@@ -274,8 +281,15 @@ def test_geertsma_TS_rporv(setUp):
 
     parms.velocity_model = "TEST.segy"
 
-    l = [50, 150]
-    create_segy_file(parms.velocity_model, spec, xl=l, il=l, cdp_x=l, cdp_y=l)
+    int_val = [50, 150]
+    create_segy_file(
+        parms.velocity_model,
+        spec,
+        xl=int_val,
+        il=int_val,
+        cdp_x=int_val,
+        cdp_y=int_val
+    )
 
     ots = OTS(
         parms.eclbase,
@@ -296,6 +310,7 @@ def test_geertsma_TS_rporv(setUp):
     ]
 
     tshift = ots.geertsma_ts_rporv(vintage_pairs)
+    assert tshift[0][0] == pytest.approx(0.0, abs=0.0001)
 
 
 @pytest.mark.usefixtures("setup_tmpdir")
@@ -311,8 +326,15 @@ def test_geertsma_TS(setUp):
 
     parms.velocity_model = "TEST.segy"
 
-    l = [50, 150]
-    create_segy_file(parms.velocity_model, spec, xl=l, il=l, cdp_x=l, cdp_y=l)
+    int_val = [50, 150]
+    create_segy_file(
+        parms.velocity_model,
+        spec,
+        xl=int_val,
+        il=int_val,
+        cdp_x=int_val,
+        cdp_y=int_val
+    )
 
     ots = OTS(
         parms.eclbase,

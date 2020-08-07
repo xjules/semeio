@@ -124,9 +124,11 @@ class OTSVelSurface(object):
         :return:
         """
         res_n = res_corners.shape[axis]
-        # average extent of the grid in axis direction divided by resolution gives us average extent of one voxel
+        # average extent of the grid in axis direction divided by resolution
+        # gives us average extent of one voxel
         size = np.mean(np.max(res_corners, axis) - np.min(res_corners, axis)) / res_n
-        # the number of grid voxels that can be fit into the segy volume defined by CDP_X and CDP_Y
+        # the number of grid voxels that can be fit into the segy volume
+        # defined by CDP_X and CDP_Y
         nn = np.ceil(
             np.mean(np.max(vel_axis, axis) - np.min(vel_axis, axis)) / size
         ).astype(np.int)
@@ -153,14 +155,14 @@ class OTSVelSurface(object):
             ntt = nt
         dt = dt * upst
         # skip positions if needed
-        x = x_vel[0 : (nxx - 1) * upsx + 1 : upsx, 0 : (nyy - 1) * upsy + 1 : upsy]
-        y = y_vel[0 : (nxx - 1) * upsx + 1 : upsx, 0 : (nyy - 1) * upsy + 1 : upsy]
+        x = x_vel[0: (nxx - 1) * upsx + 1: upsx, 0: (nyy - 1) * upsy + 1: upsy]
+        y = y_vel[0: (nxx - 1) * upsx + 1: upsx, 0: (nyy - 1) * upsy + 1: upsy]
         # upscale traces if needed, i.e., ntt > nt
         # skip samples if needs, ups >= 2
         traces_upscaled = traces[
-            0 : (nxx - 1) * upsx + 1 : upsx,
-            0 : (nyy - 1) * upsy + 1 : upsy,
-            0 : (ntt - 1) * upst + 1 : upst,
+            0: (nxx - 1) * upsx + 1: upsx,
+            0: (nyy - 1) * upsy + 1: upsy,
+            0: (ntt - 1) * upst + 1: upst,
         ]
 
         return x, y, traces_upscaled, nt, dt
@@ -169,14 +171,17 @@ class OTSVelSurface(object):
         """
         Interpolates reservoir top surface to velocity grid
         """
-        # downsample segy if segy resultion of CDP and sample rate is higher than of the Eclgrid
+        # downsample segy if segy resultion of CDP and
+        # sample rate is higher than of the Eclgrid
         x, y, traces, nt, self._dt = self._read_velocity(
             vcube, res_surface.cell_corners
         )
-        # this is some clever integration of traces using averaging between two samples?
+        # this is some clever integration of traces using
+        # averaging between two samples?
         vel_t_int = np.zeros_like(traces)
         vel_t_int[:, :, 1:] = (traces[:, :, 0:-1] + traces[:, :, 1:]) / 2
-        # cumulative sum of each trace and reshape to 2D array of size (num_trace, num_samples)
+        # cumulative sum of each trace and reshape to 2D
+        # array of size (num_trace, num_samples)
         self._z3d = np.cumsum(vel_t_int * self._dt / 2, 2).reshape(
             -1, vel_t_int.shape[-1]
         )
@@ -184,13 +189,13 @@ class OTSVelSurface(object):
         ip = CloughTocher2DInterpolator((res_surface.x, res_surface.y), res_surface.z)
         # interpolate over our vel field given by pos x and y
         z = ip(x, y)
-
         # z gives a new depth for segy CDP pos given the grid inerface surface
 
-        # So far we have downsampled the segy file to correspond with the resolution of the grid.
+        # So far we have downsampled the segy file to correspond
+        # with the resolution of the grid.
         # The x,y values corresponds to the remaining segy positions.
-        # furthermore the z values are the interpolated values that match the top layer of the
-        # active cells in the grid file.
+        # furthermore the z values are the interpolated values that
+        # match the top layer of the active cells in the grid file.
         self._nx, self._ny = x.shape
         self._x = x.reshape(-1)
         self._y = y.reshape(-1)

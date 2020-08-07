@@ -46,11 +46,13 @@ def build_schema():
             "rfactor": {MK.Type: types.Number, MK.Description: "R factor."},
             "above": {
                 MK.Type: types.Number,
-                MK.Description: "Distance in meters above the reservoir where shift is calculated.",
+                MK.Description: "Distance in meters above the reservoir"
+                " where shift is calculated.",
             },
             "convention": {
                 MK.Type: types.Number,
-                MK.Description: "Can be either 1 or -1, where 1 = monitor-base and -1 = base-monitor."
+                MK.Description: "Can be either 1 or -1,"
+                " where 1 = monitor-base and -1 = base-monitor."
                 "The default value is 1.",
                 MK.Default: 1,
             },
@@ -63,11 +65,12 @@ def build_schema():
             "output_dir": {
                 MK.Type: types.String,
                 MK.Description: "Directory(ies) where shift is written to disk."
-                "Post fixed with type of algorithm. ts, ts_simple, dpv",
+                " Post fixed with type of algorithm. ts, ts_simple, dpv",
             },
             "horizon": {
                 MK.Type: types.String,
-                MK.Description: "Path to result irap file with depth of horizon. Only output.",
+                MK.Description: "Path to result irap file with depth of horizon."
+                " Only output.",
                 MK.Default: None,
             },
             "eclbase": {
@@ -76,7 +79,8 @@ def build_schema():
             },
             "ascii": {
                 MK.Type: types.String,
-                MK.Description: "Path to result text file with lines of x, y, z, ts1, ts2, ts3....",
+                MK.Description: "Path to result text file with lines"
+                " of x, y, z, ts1, ts2, ts3....",
                 MK.Default: None,
             },
             "velocity_model": {
@@ -85,7 +89,8 @@ def build_schema():
             },
             "mapaxes": {
                 MK.Type: types.Bool,
-                MK.Description: "Mapping axes from the global to local geometry. Can be True or False.",
+                MK.Description: "Mapping axes from the global to local geometry."
+                " Can be True or False.",
             },
             "vintages": {
                 MK.Type: types.NamedDict,
@@ -113,7 +118,7 @@ def build_schema():
                     },
                     "ts": {
                         MK.Type: types.List,
-                        MK.Description: "TimeShift geertsma algorithm, which is very slow.",
+                        MK.Description: "TimeShift geertsma algorithm - very slow.",
                         MK.Content: {
                             MK.Item: {
                                 MK.Type: types.List,
@@ -132,7 +137,8 @@ def build_schema():
                     },
                     "dpv": {
                         MK.Type: types.List,
-                        MK.Description: "Delta pressure multiplied by the volume, which is a faster implementation.",
+                        MK.Description: "Delta pressure multiplied by the volume, "
+                        "which is a faster implementation.",
                         MK.Content: {
                             MK.Item: {
                                 MK.Type: types.List,

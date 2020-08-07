@@ -77,15 +77,15 @@ def create_segy_file(name, spec, trace=None, il=None, xl=None, cdp_x=None, cdp_y
         for i in range(len(spec.samples)):
             trace[i] = 1500 + i
 
-    l = [50, 150]
+    int_val = [50, 150]
     if il is None:
-        il = l
+        il = int_val
     if xl is None:
-        xl = l
+        xl = int_val
     if cdp_x is None:
-        cdp_x = l
+        cdp_x = int_val
     if cdp_y is None:
-        cdp_y = l
+        cdp_y = int_val
 
     with segyio.create(name, spec) as f:
 

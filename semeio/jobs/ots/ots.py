@@ -264,7 +264,8 @@ class OTS(object):
                         surface.z[point] - self._seabed,
                     )
                     # subsidence and displacement have opposite sign
-                    # should have minus on dz1 and dz2 here, more efficient when calculating ts
+                    # should have minus on dz1 and dz2 here,
+                    # more efficient when calculating ts
                     dz1 = self.subsidence.eval_geertsma_rporv(
                         base_survey=vn,
                         monitor_survey=None,
@@ -287,13 +288,15 @@ class OTS(object):
             if self._verbose:
                 if self._convention == 1:
                     print(
-                        "{:%x %X} TS_RPORV: Calculating shift {:%Y.%m.%d}-{:%Y.%m.%d} in {} points".format(
+                        "{:%x %X} TS_RPORV: Calculating shift"
+                        " {:%Y.%m.%d}-{:%Y.%m.%d} in {} points".format(
                             dt.now(), vp[0], vp[1], num_points_calculated
                         )
                     )
                 if self._convention == -1:
                     print(
-                        "{:%x %X} TS_RPORV: Calculating shift {:%Y.%m.%d}-{:%Y.%m.%d} in {} points".format(
+                        "{:%x %X} TS_RPORV: Calculating shift"
+                        " {:%Y.%m.%d}-{:%Y.%m.%d} in {} points".format(
                             dt.now(), vp[1], vp[0], num_points_calculated
                         )
                     )
@@ -353,7 +356,8 @@ class OTS(object):
                         surface.z[point] - self._seabed,
                     )
                     # subsidence and displacement have opposite sign
-                    # should have minus on dz1 and dz2 here, more efficient when calculating ts
+                    # should have minus on dz1 and dz2 here, more efficient
+                    # when calculating ts
                     dz1 = self.subsidence.evalGeertsma(
                         base_survey=vn,
                         monitor_survey=None,
@@ -376,13 +380,15 @@ class OTS(object):
             if self._verbose:
                 if self._convention == 1:
                     print(
-                        "{:%x %X} TS_SIMPLE: Calculating shift {:%Y.%m.%d}-{:%Y.%m.%d} in {} points".format(
+                        "{:%x %X} TS_SIMPLE: Calculating shift"
+                        " {:%Y.%m.%d}-{:%Y.%m.%d} in {} points".format(
                             dt.now(), vp[0], vp[1], num_points_calculated
                         )
                     )
                 if self._convention == -1:
                     print(
-                        "{:%x %X} TS_SIMPLE: Calculating shift {:%Y.%m.%d}-{:%Y.%m.%d} in {} points".format(
+                        "{:%x %X} TS_SIMPLE: Calculating shift"
+                        " {:%Y.%m.%d}-{:%Y.%m.%d} in {} points".format(
                             dt.now(), vp[1], vp[0], num_points_calculated
                         )
                     )
@@ -422,7 +428,8 @@ class OTS(object):
             du = np.zeros(num_points)
             if self._verbose:
                 print(
-                    "{:%x %X} TS: Calculating vintage {:%Y.%m.%d} - {:%Y.%m.%d}".format(
+                    "{:%x %X} TS: Calculating vintage"
+                    " {:%Y.%m.%d} - {:%Y.%m.%d}".format(
                         dt.now(), vp[0], vp[1]
                     )
                 )
@@ -442,7 +449,8 @@ class OTS(object):
                             r1 = (surface.x[point], surface.y[point], rz)
                             r2 = (surface.x[point], surface.y[point], rz + 0.1)
                             # subsidence and displacement have opposite sign
-                            # should have minus here, more efficient when calculating ts
+                            # should have minus here, more efficient
+                            # when calculating ts
                             dz1 = self.subsidence.evalGeertsma(
                                 base_survey="base",
                                 monitor_survey="monitor",
@@ -466,13 +474,15 @@ class OTS(object):
             if self._verbose:
                 if self._convention == 1:
                     print(
-                        "{:%x %X} TS: Calculating shift {:%Y.%m.%d}-{:%Y.%m.%d} in {} points".format(
+                        "{:%x %X} TS: Calculating shift"
+                        " {:%Y.%m.%d}-{:%Y.%m.%d} in {} points".format(
                             dt.now(), vp[0], vp[1], num_points_calculated
                         )
                     )
                 if self._convention == -1:
                     print(
-                        "{:%x %X} TS: Calculating shift {:%Y.%m.%d}-{:%Y.%m.%d} in {} points".format(
+                        "{:%x %X} TS: Calculating shift"
+                        " {:%Y.%m.%d}-{:%Y.%m.%d} in {} points".format(
                             dt.now(), vp[1], vp[0], num_points_calculated
                         )
                     )
@@ -533,7 +543,8 @@ class OTS(object):
         for iv, (vn, vd) in enumerate(zip(vintages.name, vintages.date)):
             if self._verbose:
                 print(
-                    "{:%x %X} DPV: Calculating vintage {:%Y.%m.%d}".format(dt.now(), vd)
+                    "{:%x %X} DPV: Calculating vintage"
+                    " {:%Y.%m.%d}".format(dt.now(), vd)
                 )
                 sys.stdout.flush()
 
@@ -561,13 +572,15 @@ class OTS(object):
             if self._verbose:
                 if self._convention == 1:
                     print(
-                        "{:%x %X} DPV: Calculating shift {:%Y.%m.%d}-{:%Y.%m.%d} in {} points".format(
+                        "{:%x %X} DPV: Calculating shift"
+                        " {:%Y.%m.%d}-{:%Y.%m.%d} in {} points".format(
                             dt.now(), vp[0], vp[1], num_points_calculated
                         )
                     )
                 if self._convention == -1:
                     print(
-                        "{:%x %X} DPV: Calculating shift {:%Y.%m.%d}-{:%Y.%m.%d} in {} points".format(
+                        "{:%x %X} DPV: Calculating shift"
+                        " {:%Y.%m.%d}-{:%Y.%m.%d} in {} points".format(
                             dt.now(), vp[1], vp[0], num_points_calculated
                         )
                     )
