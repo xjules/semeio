@@ -32,14 +32,7 @@ def test_surface(setup_spec):
     spec = setup_spec
     vel = "TEST.segy"
     int_val = [50, 150]
-    create_segy_file(
-        vel,
-        spec,
-        xl=int_val,
-        il=int_val,
-        cdp_x=int_val,
-        cdp_y=int_val
-    )
+    create_segy_file(vel, spec, xl=int_val, il=int_val, cdp_x=int_val, cdp_y=int_val)
     grid = EclGridGenerator.createRectangular(dims=(2, 2, 2), dV=(100, 100, 100))
     res_surface = OTSResSurface(grid=grid, above=0)
     ots_s = OTSVelSurface(res_surface, vel)
@@ -55,14 +48,7 @@ def test_z3d(setup_spec):
     spec = setup_spec
     vel = "TEST.segy"
     int_val = [50, 150]
-    create_segy_file(
-        vel,
-        spec,
-        xl=int_val,
-        il=int_val,
-        cdp_x=int_val,
-        cdp_y=int_val
-    )
+    create_segy_file(vel, spec, xl=int_val, il=int_val, cdp_x=int_val, cdp_y=int_val)
     grid = EclGridGenerator.createRectangular(dims=(2, 2, 2), dV=(100, 100, 100))
     res_surface = OTSResSurface(grid=grid, above=0)
     ots_s = OTSVelSurface(res_surface, vel)

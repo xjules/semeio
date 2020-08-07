@@ -216,12 +216,7 @@ def test_geertsma_TS_simple(setUp):
 
     int_val = [50, 150]
     create_segy_file(
-        parms.velocity_model,
-        spec,
-        xl=int_val,
-        il=int_val,
-        cdp_x=int_val,
-        cdp_y=int_val
+        parms.velocity_model, spec, xl=int_val, il=int_val, cdp_x=int_val, cdp_y=int_val
     )
 
     ots = OTS(
@@ -283,12 +278,7 @@ def test_geertsma_TS_rporv(setUp):
 
     int_val = [50, 150]
     create_segy_file(
-        parms.velocity_model,
-        spec,
-        xl=int_val,
-        il=int_val,
-        cdp_x=int_val,
-        cdp_y=int_val
+        parms.velocity_model, spec, xl=int_val, il=int_val, cdp_x=int_val, cdp_y=int_val
     )
 
     ots = OTS(
@@ -328,12 +318,7 @@ def test_geertsma_TS(setUp):
 
     int_val = [50, 150]
     create_segy_file(
-        parms.velocity_model,
-        spec,
-        xl=int_val,
-        il=int_val,
-        cdp_x=int_val,
-        cdp_y=int_val
+        parms.velocity_model, spec, xl=int_val, il=int_val, cdp_x=int_val, cdp_y=int_val
     )
 
     ots = OTS(

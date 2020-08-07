@@ -429,9 +429,7 @@ class OTS(object):
             if self._verbose:
                 print(
                     "{:%x %X} TS: Calculating vintage"
-                    " {:%Y.%m.%d} - {:%Y.%m.%d}".format(
-                        dt.now(), vp[0], vp[1]
-                    )
+                    " {:%Y.%m.%d} - {:%Y.%m.%d}".format(dt.now(), vp[0], vp[1])
                 )
                 sys.stdout.flush()
 

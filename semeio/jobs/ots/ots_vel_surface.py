@@ -155,14 +155,14 @@ class OTSVelSurface(object):
             ntt = nt
         dt = dt * upst
         # skip positions if needed
-        x = x_vel[0: (nxx - 1) * upsx + 1: upsx, 0: (nyy - 1) * upsy + 1: upsy]
-        y = y_vel[0: (nxx - 1) * upsx + 1: upsx, 0: (nyy - 1) * upsy + 1: upsy]
+        x = x_vel[0 : (nxx - 1) * upsx + 1 : upsx, 0 : (nyy - 1) * upsy + 1 : upsy]
+        y = y_vel[0 : (nxx - 1) * upsx + 1 : upsx, 0 : (nyy - 1) * upsy + 1 : upsy]
         # upscale traces if needed, i.e., ntt > nt
         # skip samples if needs, ups >= 2
         traces_upscaled = traces[
-            0: (nxx - 1) * upsx + 1: upsx,
-            0: (nyy - 1) * upsy + 1: upsy,
-            0: (ntt - 1) * upst + 1: upst,
+            0 : (nxx - 1) * upsx + 1 : upsx,
+            0 : (nyy - 1) * upsy + 1 : upsy,
+            0 : (ntt - 1) * upst + 1 : upst,
         ]
 
         return x, y, traces_upscaled, nt, dt
