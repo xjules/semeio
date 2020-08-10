@@ -17,6 +17,7 @@ def _get_jobs_from_directory(directory):
     return {os.path.basename(path): path for path in all_files}
 
 
+# pylint: disable=no-value-for-parameter
 @hook_implementation
 @plugin_response(plugin_name="semeio")
 def installable_jobs():
