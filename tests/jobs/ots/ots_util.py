@@ -1,5 +1,7 @@
 from ecl.eclfile import EclKW, openFortIO, FortIO
 from ecl import EclDataType
+from ecl.grid import EclGrid
+import os
 import segyio
 from segyio import TraceField
 import numpy as np
@@ -21,7 +23,7 @@ def create_restart(grid, case, rporv=None):
         p = EclKW("PRESSURE", grid.getNumActive(), EclDataType.ECL_FLOAT)
         p.assign(1)
 
-        for i in range(len(p)):
+        for i, _ in enumerate(p):
             p[i] = 10
 
         header = EclKW("INTEHEAD", 67, EclDataType.ECL_INT)
@@ -41,7 +43,7 @@ def create_restart(grid, case, rporv=None):
 
         seq_hdr[0] = 2
         header[66] = 2010
-        for i in range(len(p)):
+        for i, _ in enumerate(p):
             p[i] = 20
 
         seq_hdr.fwrite(f)
@@ -56,7 +58,7 @@ def create_restart(grid, case, rporv=None):
 
         seq_hdr[0] = 3
         header[66] = 2011
-        for i in range(len(p)):
+        for i, _ in enumerate(p):
             p[i] = 25
 
         seq_hdr.fwrite(f)
@@ -91,11 +93,11 @@ def create_segy_file(name, spec, trace=None, il=None, xl=None, cdp_x=None, cdp_y
 
         scalar = 1
         trno = 0
-        for i in range(len(cdp_x)):
-            for j in range(len(cdp_y)):
+        for i, i_cdp_x in enumerate(cdp_x):
+            for j, j_cdp_y in enumerate(cdp_y):
                 f.header[trno] = {
-                    TraceField.CDP_Y: cdp_y[j],
-                    TraceField.CDP_X: cdp_x[i],
+                    TraceField.CDP_Y: j_cdp_y,
+                    TraceField.CDP_X: i_cdp_x,
                     TraceField.CROSSLINE_3D: xl[i],
                     TraceField.INLINE_3D: il[j],
                     TraceField.SourceGroupScalar: scalar,
@@ -166,9 +168,6 @@ def mock_segy(
 
 
 if __name__ == "__main__":
-    from ecl.grid import EclGrid
-    import os
-
     grid_path = os.path.realpath(
         os.path.join(os.path.dirname(__file__), "../../../test-data/norne")
     )

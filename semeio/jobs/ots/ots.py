@@ -97,7 +97,7 @@ def ots_run(parameter_file, verbose=False):
 
     if parms.ascii is not None:
         with open(parms.ascii, "w") as f:
-            for point in range(len(surface_horizon)):
+            for point, _ in enumerate(surface_horizon):
                 xy = surface_horizon.getXY(point)
                 ts = []
                 for iv in range(len(vintage_pairs.ts)):
@@ -195,7 +195,7 @@ class OTS(object):
         ip = CloughTocher2DInterpolator((x, y), z, fill_value=0)
         irap_z = ip(irap_x, irap_y)
 
-        for i in range(len(surf)):
+        for i, _ in enumerate(surf):
             surf[i] = irap_z[i]
 
         return surf
@@ -218,7 +218,7 @@ class OTS(object):
 
     @staticmethod
     def _divide_negative_shift(ts):
-        for i in range(len(ts)):
+        for i, _ in enumerate(ts):
             if ts[i] < 0:
                 ts[i] /= 5.0
 
