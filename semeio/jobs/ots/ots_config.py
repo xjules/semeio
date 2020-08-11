@@ -12,6 +12,11 @@ def _is_length_equal_2(value):
     return len(value) == 2
 
 
+@configsuite.validator_msg("Only value of 1 or -1 is allowed")
+def _is_int_one(value):
+    return value == 1 or value == -1
+
+
 @configsuite.validator_msg("Vintages must contain at least an entry!")
 def _min_length(value):
     return len(value) > 1
@@ -55,7 +60,8 @@ def build_schema():
                 "shallowest cell, eg. 100",
             },
             "convention": {
-                MK.Type: types.Number,
+                MK.Type: types.Integer,
+                MK.ElementValidators: (_is_int_one,),
                 MK.Description: "Positive or negative shift can be either 1 or -1,"
                 " where 1 = monitor-base and -1 = base-monitor."
                 "The default value is 1.",
