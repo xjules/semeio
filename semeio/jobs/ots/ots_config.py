@@ -43,20 +43,29 @@ def build_schema():
                 MK.Type: types.Number,
                 MK.Description: "The depth of the seabead in meters.",
             },
-            "rfactor": {MK.Type: types.Number, MK.Description: "R factor."},
+            "rfactor": {
+                MK.Type: types.Number,
+                MK.Description: "Scales the surface displacement between"
+                " base_survey and monitor_survey, eg. 20.",
+            },
             "above": {
                 MK.Type: types.Number,
                 MK.Description: "Distance in meters above the reservoir"
-                " where shift is calculated.",
+                " where shift is calculated. The distance from the "
+                "shallowest cell, eg. 100",
             },
             "convention": {
                 MK.Type: types.Number,
-                MK.Description: "Can be either 1 or -1,"
+                MK.Description: "Positive or negative shift can be either 1 or -1,"
                 " where 1 = monitor-base and -1 = base-monitor."
                 "The default value is 1.",
                 MK.Default: 1,
             },
-            "poisson": {MK.Type: types.Number, MK.Description: "Poisson ratio."},
+            "poisson": {
+                MK.Type: types.Number,
+                MK.Description: "Poisson ratio. Describes the expansion or"
+                " contraction of material in ecl_subsidence_eval.",
+            },
             "youngs": {
                 MK.Type: types.Number,
                 MK.Description: "Youngs modulus. The default is 0.",
@@ -64,13 +73,13 @@ def build_schema():
             },
             "output_dir": {
                 MK.Type: types.String,
-                MK.Description: "Directory(ies) where shift is written to disk."
-                " Post fixed with type of algorithm. ts, ts_simple, dpv",
+                MK.Description: "Directory(ies) where the shift is written to disk."
+                " Post fixed with type of algorithm: ts, ts_simple, dpv and ts_rporv",
             },
             "horizon": {
                 MK.Type: types.String,
-                MK.Description: "Path to result irap file with depth of horizon."
-                " Only output.",
+                MK.Description: "Path to result irap file, the surface mapped to "
+                "the velocity grid, with the depth of horizon.",
                 MK.Default: None,
             },
             "eclbase": {
@@ -79,22 +88,24 @@ def build_schema():
             },
             "ascii": {
                 MK.Type: types.String,
-                MK.Description: "Path to result text file with lines"
-                " of x, y, z, ts1, ts2, ts3....",
+                MK.Description: "Path to resulting text file, which contains all "
+                "computed vintage pair dates: lines of x, y, z, ts1, ts2, ts3....",
                 MK.Default: None,
             },
             "velocity_model": {
                 MK.Type: types.String,
-                MK.Description: "Path to the segy file containing the velocity.",
+                MK.Description: "Path to segy file containing the velocity field.",
             },
             "mapaxes": {
                 MK.Type: types.Bool,
                 MK.Description: "Mapping axes from the global to local geometry."
-                " Can be True or False.",
+                " Can be True or False. If False EclGrid will not "
+                "apply transformation to the grid",
             },
             "vintages": {
                 MK.Type: types.NamedDict,
                 MK.ElementValidators: (_min_length,),
+                MK.Description: "Vintage date pairs: date of base and monitor survey.",
                 MK.Content: {
                     "ts_simple": {
                         MK.Type: types.List,
@@ -118,7 +129,8 @@ def build_schema():
                     },
                     "ts": {
                         MK.Type: types.List,
-                        MK.Description: "TimeShift geertsma algorithm - very slow.",
+                        MK.Description: "TimeShift geertsma algorithm, which "
+                        "uses velocity. Very slow.",
                         MK.Content: {
                             MK.Item: {
                                 MK.Type: types.List,
@@ -137,7 +149,7 @@ def build_schema():
                     },
                     "dpv": {
                         MK.Type: types.List,
-                        MK.Description: "Delta pressure multiplied by the volume, "
+                        MK.Description: "Delta pressure multiplied by cell volume, "
                         "which is a faster implementation.",
                         MK.Content: {
                             MK.Item: {
@@ -157,6 +169,10 @@ def build_schema():
                     },
                     "ts_rporv": {
                         MK.Type: types.List,
+                        MK.Description: "Calculates timeshift without using "
+                        "velocity. The velocity is only used to get the surface "
+                        "on the velocity grid. It uses a change in porevolume "
+                        "from Eclipse (RPORV in .UNRST) as input to Geertsma model.",
                         MK.Content: {
                             MK.Item: {
                                 MK.Type: types.List,
