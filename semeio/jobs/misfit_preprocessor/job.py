@@ -5,7 +5,6 @@ from semeio.jobs.misfit_preprocessor.config import (
 )
 from semeio.jobs.spearman_correlation_job.job import spearman_job
 
-
 def run(misfit_preprocessor_config, measured_data, reporter):
     config = assemble_config(misfit_preprocessor_config, measured_data)
     if not config.valid:
