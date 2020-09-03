@@ -20,10 +20,21 @@ from semeio.jobs.spearman_correlation_job.job import spearman_job
 
 class MisfitPreprocessorJob(SemeioScript):  # pylint: disable=too-few-public-methods
     def run(self, *args):
+        config_record = _fetch_config_record(args)
+        measured_record = _load_measured_record(self.ert())
+
+        scaling_configs = misfit_preprocessor.run(
+            **{
+                "misfit_preprocessor_config": config_record,
+                "measured_data": measured_record,
+                "reporter": self.reporter,
+            }
+        )
+
+    def run2(self, *args):
         misfit_preprocessor_config = _fetch_config_record(args)
         measured_record = _load_measured_record(self.ert())
 
-        # call PCA / COS job first and get number of n_components
         config = assemble_config(misfit_preprocessor_config, measured_record)
         if not config.valid:
             raise ValidationError(
@@ -50,6 +61,7 @@ class MisfitPreprocessorJob(SemeioScript):  # pylint: disable=too-few-public-met
 
         elif config.clustering.method == AUTO_CLUSTER:
             scaling_config = config.scaling
+            # call PCA / COS job first and get number of n_components
             try:
                 nr_components = CorrelatedObservationsScalingJob(
                     self.ert()
@@ -103,9 +115,10 @@ def _fetch_config_record(args):
         )
 
 
-def _load_measured_record(enkf_main):
+def _load_measured_record(enkf_main, obs_keys=None, index_lists=None):
     facade = LibresFacade(enkf_main)
-    obs_keys = [
-        facade.get_observation_key(nr) for nr, _ in enumerate(facade.get_observations())
-    ]
-    return MeasuredData(facade, obs_keys)
+    if obs_keys is None:
+        obs_keys = [
+            facade.get_observation_key(nr) for nr, _ in enumerate(facade.get_observations())
+        ]
+    return MeasuredData(facade, obs_keys, index_lists)

@@ -37,22 +37,15 @@ class CorrelatedObservationsScalingJob(
             )
             job.scale(measured_data)
 
-    def get_nr_primary_components(self, job_config):
-
-        facade = LibresFacade(self.ert())
+    @staticmethod
+    def get_nr_primary_components(measured_data, job_config, reporter):
         user_config = load_yaml(job_config)
         user_config = _insert_default_group(user_config)
 
         nr_component_list = []
         for config in user_config:
-            calc_keys = [event.key for event in config.snapshot.CALCULATE_KEYS.keys]
-            index_list = [
-                event.index if len(event.index) > 0 else None
-                for event in self._config.snapshot.CALCULATE_KEYS.keys
-            ]
-            measured_data = MeasuredData(facade, calc_keys, index_list)
             _, nr_components, _ = ScalingJob.get_scaling_factor(
-                measured_data, config.snapshot, self.reporter
+                measured_data, config.snapshot, reporter
             )
             nr_component_list.append(nr_components)
         return nr_component_list
