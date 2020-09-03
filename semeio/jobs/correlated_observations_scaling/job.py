@@ -94,8 +94,8 @@ class ScalingJob(object):
         self._reporter.publish("scale_factor", scale_factor)
 
         # this should go away
-        # update_data = create_active_lists(self._obs, config.UPDATE_KEYS.keys)
-        # self._update_scaling(self._obs, scale_factor, update_data)
+        update_data = create_active_lists(self._obs, config.UPDATE_KEYS.keys)
+        self._update_scaling(self._obs, scale_factor, update_data)
 
     def _validate(self):
         """

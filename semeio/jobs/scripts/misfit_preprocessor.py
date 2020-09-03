@@ -41,7 +41,7 @@ class MisfitPreprocessorJob(SemeioScript):  # pylint: disable=too-few-public-met
                 method=sconfig.linkage.method,
                 metric=sconfig.linkage.metric,
             )
-            scaling_params = _fetch_scaling_parameters(config_record, measured_record)
+            scaling_params = _fetch_scaling_parameters(misfit_preprocessor_config, measured_record)
             for scaling_config in scaling_configs:
                 scaling_config["CALCULATE_KEYS"].update(scaling_params)
 
