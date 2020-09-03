@@ -19,9 +19,10 @@ from semeio.jobs.spearman_correlation_job.job import spearman_job
 
 
 class MisfitPreprocessorJob(SemeioScript):  # pylint: disable=too-few-public-methods
-    def run_auto_cluster(
-        self, misfit_preprocessor_config, measured_record, dry_run=False
-    ):
+    def run(self, *args):
+        misfit_preprocessor_config = _fetch_config_record(args)
+        measured_record = _load_measured_record(self.ert())
+
         # call PCA / COS job first and get number of n_components
         config = assemble_config(misfit_preprocessor_config, measured_record)
         if not config.valid:
@@ -41,7 +42,9 @@ class MisfitPreprocessorJob(SemeioScript):  # pylint: disable=too-few-public-met
                 method=sconfig.linkage.method,
                 metric=sconfig.linkage.metric,
             )
-            scaling_params = _fetch_scaling_parameters(misfit_preprocessor_config, measured_record)
+            scaling_params = _fetch_scaling_parameters(
+                misfit_preprocessor_config, measured_record
+            )
             for scaling_config in scaling_configs:
                 scaling_config["CALCULATE_KEYS"].update(scaling_params)
 
@@ -73,46 +76,16 @@ class MisfitPreprocessorJob(SemeioScript):  # pylint: disable=too-few-public-met
         except EmptyDatasetException:
             pass
 
-    
-    def run(self, *args):
-        config_record = _fetch_config_record(args)
-        measured_record = _load_measured_record(self.ert())
-        self.run_auto_cluster(config_record, measured_record)
-        # scaling_configs = misfit_preprocessor.run(
-        #     **{
-        #         "misfit_preprocessor_config": config_record,
-        #         "measured_data": measured_record,
-        #         "reporter": self.reporter,
-        #     }
-        # )
-
-        # # The execution of COS should be moved into
-        # # misfit_preprocessor.run when COS no longer depend on self.ert
-        # # to run.
-        # scaling_params = _fetch_scaling_parameters(config_record, measured_record)
-        # for scaling_config in scaling_configs:
-        #     scaling_config["CALCULATE_KEYS"].update(scaling_params)
-
-        # try:
-        #     CorrelatedObservationsScalingJob(self.ert()).run(scaling_configs)
-        # except EmptyDatasetException:
-        #     pass
-
 
 def _fetch_scaling_parameters(config_record, measured_data):
-    config = misfit_preprocessor.assemble_config(
-        config_record,
-        measured_data,
-    )
+    config = misfit_preprocessor.assemble_config(config_record, measured_data)
     if not config.valid:
         # The config is loaded by misfit_preprocessor.run first. The
         # second time should never fail!
         raise ValueError("Misfit preprocessor config not valid on second load")
 
     scale_conf = config.snapshot.scaling
-    return {
-        "threshold": scale_conf.threshold,
-    }
+    return {"threshold": scale_conf.threshold}
 
 
 def _fetch_config_record(args):
